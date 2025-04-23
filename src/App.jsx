@@ -3,17 +3,18 @@ import Player from "./components/Player";
 import { useState } from "react";
 import Log from "./components/Log";
 
+function deriveActivePlayer(gameTurns) {
+  return (gameTurns.length > 0 && gameTurns[0].player) === "X" ? "O" : "X";
+}
+
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
-  const [activePlayer, setActivePlayer] = useState("X");
+
+  const activePlayer = deriveActivePlayer(gameTurns);
 
   function squareSelectHandler(rowIndex, colIndex) {
-    setActivePlayer((currActivePlayer) =>
-      currActivePlayer === "X" ? "O" : "X"
-    );
     setGameTurns((prevTurns) => {
-      let currentPlayer =
-        (prevTurns.length > 0 && prevTurns[0].player) === "X" ? "O" : "X";
+      const currentPlayer = deriveActivePlayer(prevTurns);
 
       const updatedTurns = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
